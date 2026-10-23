@@ -60,3 +60,23 @@ export const jiraDownload = async (url) => {
   if (!res.ok) throw new Error(`Jira attachment ${res.status}`);
   return Buffer.from(await res.arrayBuffer()).toString("base64");
 };
+
+// Uploads are multipart, which jiraRequest's JSON headers cannot carry; fetch
+// sets the boundary Content-Type itself. Jira Server rejects an attachment
+// POST without X-Atlassian-Token (XSRF check). Not retried: it is a POST.
+export const jiraUpload = async (ticketId, filename, bytes) => {
+  const form = new FormData();
+  form.append("file", new Blob([bytes]), filename);
+  const res = await fetch(`${BASE}/issue/${ticketId}/attachments`, {
+    body: form,
+    headers: {
+      Accept: "application/json",
+      Authorization: AUTH_HEADER,
+      "X-Atlassian-Token": "no-check",
+    },
+    method: "POST",
+  });
+  const text = await res.text();
+  if (!res.ok) throw new Error(`Jira API ${res.status}: ${text}`);
+  return JSON.parse(text);
+};
