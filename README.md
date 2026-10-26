@@ -148,4 +148,4 @@ Questions or issues? Email [NamCP](mailto:namcp@gem-corp.global).
 
 If this project helps you, consider buying me a coffee:
 
-<img src="https://raw.githubusercontent.com/namcpgem/gem-jira-mcp/main/docs/buy-me-a-coffee.jpg" alt="Buy Me A Coffee" width="300">
+<img src="https://raw.githubusercontent.com/pnam16/gem-jira-mcp/main/docs/buy-me-a-coffee.jpg" alt="Buy Me A Coffee" width="300">

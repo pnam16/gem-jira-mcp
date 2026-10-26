@@ -48,7 +48,7 @@
   "name": "g-jira-mcp",
   "repository": {
     "type": "git",
-    "url": "git+https://github.com/namcpgem/gem-jira-mcp.git"
+    "url": "git+https://github.com/pnam16/gem-jira-mcp.git"
   },
   "scripts": {
     "build": "rsbuild build",
