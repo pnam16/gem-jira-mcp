@@ -12,7 +12,6 @@
     "@biomejs/biome": "^2.6.2",
     "@rsbuild/core": "^2.2.14",
     "@types/node": "^26.6.5",
-    "prettier": "^3.9.10",
     "release-it": "^20.2.1",
     "typescript": "^6.0.3"
   },
@@ -52,7 +51,7 @@
   },
   "scripts": {
     "build": "rsbuild build",
-    "lint": "biome migrate --write && biome check --write . && tsc --noEmit && prettier --write \"**/*.md\"",
+    "lint": "biome migrate --write && biome check --write . && tsc --noEmit",
     "prepare": "npm run build",
     "release": "release-it",
     "start": "node src/index.js",

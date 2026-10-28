@@ -4,7 +4,6 @@
 
 Build a Jira MCP server in plain JavaScript (Node.js, ESM) targeting the company's
 Jira Server/Data Center instance (REST API v2). Fixes gaps in existing MCPs:
-
 - Missing fields: `start_date`, `due_date`, `original_estimate` on create/update
 - Missing tool: `link_issues`
 
@@ -28,7 +27,6 @@ Tools to implement (8 total):
 ### Allowed APIs
 
 SDK: `@modelcontextprotocol/sdk` v1.29.0+
-
 - Import: `import { McpServer } from '@modelcontextprotocol/sdk/server/mcp.js'`
 - Import: `import { StdioServerTransport } from '@modelcontextprotocol/sdk/server/stdio.js'`
 - Tool registration: `server.registerTool(name, { description, inputSchema }, handler)`
@@ -37,7 +35,6 @@ SDK: `@modelcontextprotocol/sdk` v1.29.0+
 - Transport: `StdioServerTransport` — NEVER write to stdout in handlers, use `console.error`
 
 Jira Server REST API v2 (company instance):
-
 - Instance: `https://pm.gem-corp.tech` — Jira Server 8.5.19
 - Base: `https://pm.gem-corp.tech/rest/api/2`
 - Auth: Basic Auth `username:password` encoded as Base64
@@ -182,7 +179,6 @@ z.object({
 ```
 
 Handler:
-
 1. `GET /issue/{ticket_id}?expand=transitions`
 2. Extract: summary, status.name, description, assignee.displayName, subtasks[], duedate, customfield for start_date
 3. Return formatted text
@@ -203,7 +199,6 @@ z.object({
 ```
 
 Handler:
-
 1. `GET /issue/{ticket_id}/transitions` — get available transitions
 2. Find transition where `name.toLowerCase() === status.toLowerCase()` (or fuzzy match)
 3. `POST /issue/{ticket_id}/transitions` with `{ transition: { id } }`
@@ -231,7 +226,6 @@ z.object({
 ```
 
 Handler:
-
 1. Build `fields` object from provided params
 2. Map `story_points` → `FIELDS.storyPoints`
 3. Map `start_date` → `FIELDS.startDate`
@@ -257,7 +251,6 @@ z.object({
 ```
 
 Handler:
-
 1. `POST /issue/{ticket_id}/comment` with `{ body: body_string }`
 2. Return comment URL from response
 
@@ -277,7 +270,6 @@ z.object({
 ```
 
 Handler:
-
 1. `GET /search?jql={encoded_jql}&maxResults={max_results}&fields=summary,status,assignee,priority`
 2. Return formatted list: `KEY | Summary | Status | Assignee`
 
@@ -305,7 +297,6 @@ z.object({
 ```
 
 Handler:
-
 1. Build `fields` object with all provided params
 2. Sub-task: add `parent: { key: parent_key }` to fields
 3. `POST /issue` with fields
@@ -327,7 +318,6 @@ z.object({
 ```
 
 Handler:
-
 1. Build JQL: `fixVersion = "{fix_version}"` + optional `AND project = {project}`
    - ` AND status in (Done, Fixed, Resolved) ORDER BY issuetype`
 2. `GET /search?jql=...&maxResults=200&fields=summary,issuetype,key`
@@ -354,7 +344,6 @@ z.object({
 ```
 
 Handler:
-
 1. `POST /issueLink` with:
 
 ```json
@@ -375,20 +364,20 @@ Note: To list available link types: `GET /issueLinkType`
 ## Phase 11: Wire Everything in `src/index.js`
 
 ```js
-import { McpServer } from "@modelcontextprotocol/sdk/server/mcp.js";
-import { StdioServerTransport } from "@modelcontextprotocol/sdk/server/stdio.js";
+import {McpServer} from "@modelcontextprotocol/sdk/server/mcp.js";
+import {StdioServerTransport} from "@modelcontextprotocol/sdk/server/stdio.js";
 import "dotenv/config";
 
-import { registerGetTicket } from "./tools/get-ticket.js";
-import { registerTransitionTicket } from "./tools/transition-ticket.js";
-import { registerUpdateTicket } from "./tools/update-ticket.js";
-import { registerAddComment } from "./tools/add-comment.js";
-import { registerSearchTickets } from "./tools/search-tickets.js";
-import { registerCreateTicket } from "./tools/create-ticket.js";
-import { registerGenerateReleaseNotes } from "./tools/generate-release-notes.js";
-import { registerLinkIssues } from "./tools/link-issues.js";
+import {registerGetTicket} from "./tools/get-ticket.js";
+import {registerTransitionTicket} from "./tools/transition-ticket.js";
+import {registerUpdateTicket} from "./tools/update-ticket.js";
+import {registerAddComment} from "./tools/add-comment.js";
+import {registerSearchTickets} from "./tools/search-tickets.js";
+import {registerCreateTicket} from "./tools/create-ticket.js";
+import {registerGenerateReleaseNotes} from "./tools/generate-release-notes.js";
+import {registerLinkIssues} from "./tools/link-issues.js";
 
-const server = new McpServer({ name: "jira-mcp", version: "1.0.0" });
+const server = new McpServer({name: "jira-mcp", version: "1.0.0"});
 
 registerGetTicket(server);
 registerTransitionTicket(server);
@@ -429,7 +418,6 @@ console.error("Jira MCP server running on stdio");
 ## Phase 12: Verification Checklist
 
 For each tool, run via Claude or MCP Inspector:
-
 - [ ] `get_ticket("PROJ-1")` — returns summary, status, description
 - [ ] `transition_ticket("PROJ-1", "In Progress")` — status changes in Jira
 - [ ] `update_ticket("PROJ-1", { due_date: "2026-07-01", original_estimate: "4h" })` — fields updated

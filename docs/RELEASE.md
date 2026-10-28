@@ -59,7 +59,6 @@ Khi cài từ git, npm tự chạy script `prepare` (cấu hình `"prepare": "np
 - [ ] Local branch updated, tất cả changes đã commit
 
 release-it sẽ tự động:
-
 - [ ] Chạy lint + build
 - [ ] Bump version trong package.json
 - [ ] Commit, tag, push
