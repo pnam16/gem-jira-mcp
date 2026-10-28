@@ -193,7 +193,10 @@ export const registerGetTicket = (
         subtasks ? `Subtasks:\n${subtasks}` : null,
         include_comments ? formatComments(f.comment) : null,
         worklogs ? formatWorklogs(worklogs) : null,
-        line("Attachments", attachments.map((a) => a.filename).join(", ")),
+        line(
+          "Attachments",
+          attachments.map((a) => `${a.filename} (#${a.id})`).join(", "),
+        ),
         images.notes.length ? `Images:\n${images.notes.join("\n")}` : null,
       ]
         .filter(Boolean)

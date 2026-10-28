@@ -126,10 +126,17 @@ test("get_ticket caps a long comment thread and says it capped it", async () => 
 test("get_ticket returns image attachments as image blocks on request", async () => {
   const server = fakeServer();
   const attachment = [
-    {content: "u1", filename: "shot.png", mimeType: "image/png", size: 10},
+    {
+      content: "u1",
+      filename: "shot.png",
+      id: "1",
+      mimeType: "image/png",
+      size: 10,
+    },
     {
       content: "u2",
       filename: "spec.pdf",
+      id: "2",
       mimeType: "application/pdf",
       size: 10,
     },
@@ -154,7 +161,10 @@ test("get_ticket returns image attachments as image blocks on request", async ()
 
   const plain = await call({ticket_id: "GEM-5"});
   assert.equal(plain.content.length, 1);
-  assert.match(plain.content[0].text, /Attachments: shot.png, spec.pdf/);
+  assert.match(
+    plain.content[0].text,
+    /Attachments: shot.png \(#1\), spec.pdf \(#2\)/,
+  );
   assert.equal(downloads.length, 0);
 
   const {content} = await call({include_images: true, ticket_id: "GEM-5"});

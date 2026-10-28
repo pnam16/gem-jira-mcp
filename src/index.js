@@ -2,6 +2,7 @@ import {McpServer} from "@modelcontextprotocol/sdk/server/mcp.js";
 import {StdioServerTransport} from "@modelcontextprotocol/sdk/server/stdio.js";
 import pkg from "../package.json" with {type: "json"};
 import {registerAddAttachment} from "./tools/attachment/add.js";
+import {registerDeleteAttachment} from "./tools/attachment/delete.js";
 import {registerAddComment} from "./tools/comment/add.js";
 import {registerDeleteComment} from "./tools/comment/delete.js";
 import {registerGetComment} from "./tools/comment/get.js";
@@ -42,6 +43,7 @@ registerAddWatcher(server);
 registerRemoveWatcher(server);
 registerMoveToSprint(server);
 registerAddAttachment(server);
+registerDeleteAttachment(server);
 
 const transport = new StdioServerTransport();
 await server.connect(transport);
